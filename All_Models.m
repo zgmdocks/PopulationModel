@@ -140,55 +140,50 @@ S1_big = 1./(1+exp(B1 - y1*abs(y_big(:,1))./abs(y_big(:,1+total))));
 TR1_big = S1_big.*y_big(:,1)+y_big(:,1+total);
 %%%%% plotting
 
-figure('name','Pop 1 Globalized')
-plot(t,y_g(:,1))
+figure('name','Pop 1 all')
+plot(t,y_g(:,1),'-b')
 hold on
-plot(t,y_ng(:,1))
-plot(t,y_big(:,1))
+plot(t,y_ng(:,1),'--r')
+plot(t,y_big(:,1),':k','Linewidth',2)
 ylabel('Population (P)')
 xlabel('Time in Years (t)')
+legend('Interconnected','Isolated','10 Populations')
 
-figure('name','Resources 1 Globalized')
-plot(t,y_g(:,2))
+figure('name','Resources 1 all')
+plot(t,y_g(:,2),'-b')
 hold on
-plot(t,y_ng(:,2))
-plot(t,y_big(:,2))
+plot(t,y_ng(:,2),'--r')
+plot(t,y_big(:,1+total),':k','Linewidth',2)
 ylabel('Accessible Resources (R)')
 xlabel('Time in Years (t)')
+legend('Interconnected','Isolated','10 Populations')
 
-figure('name','Total Resources 1 Not Globalized')
-plot(t,TR1_g)
+figure('name','Total Resources 1 all')
+plot(t,TR1_g,'-b')
 hold on
-plot(t,TR1_ng)
-plot(t,TR1_big)
+plot(t,TR1_ng,'--r')
+plot(t,TR1_big,':k','Linewidth',2)
 xlabel('Time in Years (t)')
 ylabel('Accessible Resources')
+legend('Interconnected','Isolated','10 Populations')
 
 S1_g = S1_g*100;
 S1_big = S1_big*100;
 
-figure('name','Stolen 1 Globalized')
-plot(t,S1_g)
+figure('name','Stolen 1 all')
+plot(t,S1_g,'-b')
 hold on
-plot(t,S1_ng)
-plot(t,S1_big)
+plot(t,S1_ng,'--r')
+plot(t,S1_big,':k','Linewidth',2)
 ylabel('Percentage of Harvest Taken')
 xlabel('Time in Years (t)')
+legend('Interconnected','Isolated','10 Populations')
 
-% figure('name','Pop 2 Globalized')
-% plot(t,y(:,3))
-% ylabel('Population (P)')
-% xlabel('Time in Years (t)')
-% 
-% figure('name','Resources 2 Globalized')
-% plot(t,y(:,4),'Color',[0,0,1],'DisplayName','finalciv 1')
-% ylabel('Accessible Resources (R)')
-% xlabel('Time in Years (t)')
-% 
-% figure('name','Stolen 2 Globalized')
-% plot(t,S2)
-% xlabel('Time in Years (t)')
-% ylabel('Percentage of Harvest Taken')
+h = get(0,'children');
+
+for i=1:size(h,1)
+    saveas(h(i),['/Users/zgmdocks/Documents/Coupled EWS/Population Collapse/Graphs/ModelResults/',get(h(i),'Name'),'.eps'],'epsc')
+end
 
 
 

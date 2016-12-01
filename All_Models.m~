@@ -140,8 +140,8 @@ S1_big = 1./(1+exp(B1 - y1*abs(y_big(:,1))./abs(y_big(:,1+total))));
 TR1_big = S1_big.*y_big(:,2)+S1_big.*y_big(:,3)+ ...
     S1_big.*y_big(:,4)+S1_big.*y_big(:,5)+ ...
     S1_big.*y_big(:,6)+S1_big.*y_big(:,7)+ ...
-    S1_big.*y_big(:,8)+S1_big.*y_big(:,9)+ ...
-    S1_big.*y_big(:,10)+y_big(:,1+total);
+    S1_big.*y_big(:,8)+S1_big.*y_big(:,9)+y_big(:,9+total)+ ...
+    S1_big.*y_big(:,10)+y_big(:,10+total);
 %%%%% plotting
 
 figure('name','Pop 1 all')
@@ -185,9 +185,9 @@ legend('Interconnected','Isolated')%,'10 Populations')
 
 h = get(0,'children');
 
-for i=1:size(h,1)
-    saveas(h(i),['/Users/zgmdocks/Documents/Coupled EWS/Population Collapse/Graphs/ModelResults/',get(h(i),'Name'),'slides.eps'],'epsc')
-end
+% for i=1:size(h,1)
+%     saveas(h(i),['/Users/zgmdocks/Documents/Coupled EWS/Population Collapse/Graphs/ModelResults/',get(h(i),'Name'),'slides.eps'],'epsc')
+% end
 
 
 

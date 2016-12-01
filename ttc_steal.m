@@ -4,7 +4,7 @@ both = true;
 symmetric = true;
 
 tstart = 400;
-tmax = 30000;
+tmax = 4000;
 dt = 1;
 t = tstart:dt:tmax;
 
@@ -187,27 +187,27 @@ for j = 9:2:12
     else
         figure('name',[params{j}(1), ' - Collapse Time''_', datestr(clock,0),'_asym'])
     end
-    plot(params{j+1},t_c_1_asym,'o','Color', [0.4,0.4,0.4]);
+    plot(params{j+1},t_c_1_asym,'ok');
     hold on
-    plot(params{j+1},t_c_2_asym, 'ok');
-    plot(params{j+1},t_c_1_sym,'om');
-    plot(params{j+1},t_c_2_sym, 'oc');
+    plot(params{j+1},t_c_2_asym, '-y');
+    plot(params{j+1},t_c_1_sym,'oc');
+    plot(params{j+1},t_c_2_sym, '-m');
     xlabel([params{j}(1),params{j}(3:end)]);
     ylabel('Time to collapse (t)');
-    legend('Pop 1 - Globalized Asymmetric','Pop 2 - Globalized Asymmetric', ...
-        'Pop 1 - Globalized Symmetric','Pop 2 - Globalized Symmetric')
+    legend('Pop 1 - Interconnected Asymmetric','Pop 2 - Interconnected Asymmetric', ...
+        'Pop 1 - Interconnected Symmetric','Pop 2 - Interconnected Symmetric')
     if j == 1
             plot(ax,ctrl_time_g,'*g')
-            plot(ax,ctrl_time_ng,'*y')
+            %plot(ax,ctrl_time_ng,'*y')
         elseif j == 3
             plot(Kx, ctrl_time_g,'*g')
-            plot(Kx, ctrl_time_ng,'*y')
+            %plot(Kx, ctrl_time_ng,'*y')
         elseif j == 5
             plot(cx, ctrl_time_g,'*g')
-            plot(cx, ctrl_time_ng,'*y')
+            %plot(cx, ctrl_time_ng,'*y')
         elseif j == 7
             plot(hx, ctrl_time_g,'*g')
-            plot(hx, ctrl_time_ng,'*y')
+            %plot(hx, ctrl_time_ng,'*y')
         elseif j == 9
             plot(yx, ctrl_time_g,'*g')
         elseif j == 11

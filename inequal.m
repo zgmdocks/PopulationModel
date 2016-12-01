@@ -6,14 +6,14 @@ B1 = 2; % controls the location of the mid-point of the sigmoid 3.5
 y1 = 10; % controls how steep the curve is 5
 a2 = 0.0075; % a is the net growth rate of the population
 K2 = 1000000; % carrying capacity
-c2 = 0.015; % growth rate of the resources
+c2 = 0.01; % growth rate of the resources
 h2 = 0.008; % harvesting constant
 B2 = 10; % controls the location of the mid-point of the sigmoid
 y2 = 1; % controls how steep the curve is
 epsilon = 10^-4;
 
 steal1 = 1;
-steal2 = 0;
+steal2 = 1;
 
 b1 = @(R,P) 1/(1 + exp(B1-y1*P/(R)))*steal1 ;
 b2 = @(R,P) 1/(1 + exp(B2-y2*P/R))*steal2 ;
@@ -70,7 +70,7 @@ else
 end
 plot(t,S1)
 xlabel('Time in Years (t)')
-ylabel('Percentage of Harvest Stolen')
+ylabel('Percentage of Harvest Taken')
 % title('stolen harvest civ 1')
 % axis tight
 if steal1 == 1
@@ -100,7 +100,7 @@ else
 end
 plot(t,S2)
 xlabel('Time in Years (t)')
-ylabel('Percentage of Harvest Stolen')
+ylabel('Percentage of Harvest Taken')
 % title('stolen harvest civ 2')
 % axis tight
 

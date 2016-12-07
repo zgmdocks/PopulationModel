@@ -115,10 +115,3 @@ ylabel('Time to Collapse (t)')
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
 
-h = get(0,'children');
-
-
-for i=1:size(h,1)
-    saveas(h(i),['/Users/zgmdocks/Documents/Coupled EWS/Population Collapse/Graphs/Time to Collapse Graphs/','size collapse','.eps'],'epsc')
-end
-

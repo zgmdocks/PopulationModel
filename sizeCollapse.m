@@ -1,7 +1,5 @@
 clear
 
-total = 10;
-
 a1 = 0.0177; % aP is the net growth rate of the population 0.0177
 K1 = 1000000; % carrying capacity 1,000,000
 c1 = 0.015; % growth rate of the resources 0.015
@@ -84,85 +82,36 @@ b8 = @(R,P) 1/(1 + exp(B8-y8*P/R)) ;
 b9 = @(R,P) 1/(1 + exp(B9-y9*P/R)) ;
 b10 = @(R,P) 1/(1 + exp(B10-y10*P/R)) ;
 
-eval(['model = @ (t,z) ', genEqn(total)]);
+incr = 10;
+t_c = zeros(1,incr-1);
 
- 
-tstart = 1800;
-tmax = 2300;
-dt = 1;
-t = tstart:dt:tmax;
+for i = 1:incr-1
+    total = i+1;
+    eval(['model = @ (t,z) ', genEqn(total)]);
+    tstart = 0;
+    tmax = 10000;
+    dt = 1;
+    t = tstart:dt:tmax;
+    eval(geny0(total));
 
-eval(geny0(total));
+    y = zeros((tmax-tstart)*(1/dt)+1,total*2);
+    
+    options = odeset('NonNegative',eval(genList(total*2)));
+    [t,y] = ode45(model,t,y0,options);
+    
+    if isempty(find(y(:,1)<1,1))
+        t_c(i) = 500;
+    else
+        t_c(i) = find(y(:,1)<1,1);
+    end
+end
 
-y = zeros((tmax-tstart)*(1/dt)+1,total*2);
+width = 4;
+font = 24;
 
-options = odeset('NonNegative',eval(genList(total*2)));
-[t,y] = ode45(model,t,y0,options);
+plot(2:incr,t_c,'Linewidth',width)
+xlabel('Number of Populations')
+ylabel('Time to Collapse (t)')
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 
-% Calculates the stolen resources
-S1 = 1./(1+exp(B1 - y1*abs(y(:,1))./abs(y(:,1+total))));
-% S2 = 1./(1+exp(B2 - y2*abs(y(:,2))./abs(y(:,2+total))))*100;
-
-% S1 = S1.*y(:,4);
-% S2 = S2.*y(:,2);
-
-
-figure('name','Pop 1 Globalized Big')
-plot(t,y(:,1))
-%title('Population of Civilization 1 - Globalized')
-ylabel('Population (P)')
-xlabel('Time in Years (t)')
-% axis tight
-figure('name','Resources 1 Globalized Big')
-plot(t,y(:,1+total),'Color',[0,0,1],'DisplayName','finalciv 1')
-%title('Resources in Patch 1 - Globalized')
-ylabel('Accessible Resources (R)')
-xlabel('Time in Years (t)')
-axis tight
-figure('name','Stolen 1 Globalized Big')
-plot(t,S1)
-%title('Percentage of Harvest Stolen by Civilization 1 - Globalized')
-ylabel('Percentage of Harvest Taken')
-xlabel('Time in Years (t)')
-axis tight
-% figure('name','Pop 2 Globalized')
-% plot(t,y(:,2))
-% %title('Population of Civilization 2 - Globalized')
-% ylabel('Population (P)')
-% xlabel('Time in Years (t)')
-% % axis tight
-figure('name','Resources 2 Globalized Big')
-plot(t,y(:,2+total),'Color',[0,0,1],'DisplayName','finalciv 1')
-%title('Resources in Patch 2 - Globalized')
-ylabel('Accessible Resources (R)')
-xlabel('Time in Years (t)')
-% axis tight
-% figure('name','Stolen 2 Globalized')
-% plot(t,S2)
-% %title('Percentage of Harvest Stolen by Civilization 2 - Globalized')
-% xlabel('Time in Years (t)')
-% ylabel('Percentage of Harvest Stolen')
-% % axis tight
-
-% TR is the total resources available to each civ (i.e. resources
-% in their patch as well as resources they are stealing)
-TR1 = S1.*y(:,total+2) + S1.*y(:,total+3) + S1.*y(:,total+4) + S1.*y(:,total+5) + S1.*y(:,16)... 
-     + S1.*y(:,17) + S1.*y(:,18) + S1.*y(:,19) + S1.*y(:,20) + y(:,11);
-% TR2 = S1.*y(:,total+1) + S1.*y(:,total+3) + S1.*y(:,total+4) + S1.*y(:,total+5);% + S1.*y(:,16)... 
-%      %+ S1.*y(:,17) + S1.*y(:,18) + S1.*y(:,19) + S1.*y(:,20) + y(:,12);
-figure('name','Total Resources 1 Globalized Big')
-plot(t,TR1)
-%title('Total Resources Accessible to Civilization 1 - Globalized')
-xlabel('Time in Years (t)')
-ylabel('Accessible Resources')
-% figure('name','Total Resources 2 Globalized')
-% plot(t,TR2)
-% %title('Total Resources Accessible to Civilization 2 - Globalized')
-% ylabel('Accessible Resources')
-% xlabel('Time in Years (t)')
-
-% h = get(0,'children');
-% 
-% for i=1:size(h,1)
-%     saveas(h(i),['/Users/zgmdocks/Documents/Coupled EWS/Population Collapse/Graphs/ModelResults/Big Model/',get(h(i),'Name'),'.eps'],'epsc')
-% end

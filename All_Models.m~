@@ -1,7 +1,4 @@
 clear
-
-total = 10;
-
 a1 = 0.0177; % aP is the net growth rate of the population 0.0177
 K1 = 1000000; % carrying capacity 1,000,000
 c1 = 0.015; % growth rate of the resources 0.015
@@ -84,85 +81,128 @@ b8 = @(R,P) 1/(1 + exp(B8-y8*P/R)) ;
 b9 = @(R,P) 1/(1 + exp(B9-y9*P/R)) ;
 b10 = @(R,P) 1/(1 + exp(B10-y10*P/R)) ;
 
-eval(['model = @ (t,z) ', genEqn(total)]);
+%%%%% globalized model
 
+model = @(t,z) [a1*z(1)*(1-(z(1)/(z(2)+(b1(z(2),z(1))*z(4))+epsilon))) ;
+     (c1*z(2)*(1-(z(2)/K1)) - h1*z(1) - b2(z(4),z(3))*h2*z(3));
+     a2*z(3)*(1-(z(3)/(z(4)+(b2(z(4),z(3))*z(2))+epsilon))) ;
+     c2*z(4)*(1-(z(4)/K2)) - h2*z(3) - b1(z(2),z(1))*h1*z(1)];
  
 tstart = 1800;
-tmax = 2300;
+tmax = 2500;
 dt = 1;
 t = tstart:dt:tmax;
 
+y0 = [50000, K1, 50000, K2];
+
+options = odeset('NonNegative',[1 2 3 4]);
+[t_g,y_g] = ode45(model,t,y0,options);
+
+S1_g = 1./(1+exp(B1 - y1*abs(y_g(:,1))./abs(y_g(:,2))));
+S2_g = 1./(1+exp(B2 - y2*abs(y_g(:,3))./abs(y_g(:,4))));
+
+TR1_g = S1_g.*y_g(:,4)+y_g(:,2);
+TR2_g = S2_g.*y_g(:,2)+y_g(:,4);
+
+%%%%% non globalized
+
+b1 = 0 ;
+b2 = 0 ;
+
+model = @(t,z) [a1*z(1)*(1-(z(1)/(z(2)+(b1*z(4))+epsilon))) ;
+     (c1*z(2)*(1-(z(2)/K1)) - h1*z(1) - b2*h2*z(3));
+     a2*z(3)*(1-(z(3)/(z(4)+(b2*z(2))+epsilon))) ;
+     c2*z(4)*(1-(z(4)/K2)) - h2*z(3) - b1*h1*z(1)];
+ 
+[t_ng,y_ng] = ode45(model,t,y0,options);
+
+S1_ng = 1./(1+exp(B1 - y1*abs(y_ng(:,1))./abs(y_ng(:,2))))*0;
+S2_ng = 1./(1+exp(B2 - y2*abs(y_ng(:,3))./abs(y_ng(:,4))))*0;
+
+TR1_ng = S1_ng.*y_ng(:,4)+y_ng(:,2);
+TR2_ng = S2_ng.*y_ng(:,2)+y_ng(:,4);
+%%%% big model
+
+total = 10;
+
+b1 = @(R,P) 1/(1 + exp(B1-y1*P/(R))) ;
+b2 = @(R,P) 1/(1 + exp(B2-y2*P/R)) ;
+
+eval(['model = @ (t,z) ', genEqn(total)]);
+
 eval(geny0(total));
 
-y = zeros((tmax-tstart)*(1/dt)+1,total*2);
-
 options = odeset('NonNegative',eval(genList(total*2)));
-[t,y] = ode45(model,t,y0,options);
+[t_big,y_big] = ode45(model,t,y0,options);
 
-% Calculates the stolen resources
-S1 = 1./(1+exp(B1 - y1*abs(y(:,1))./abs(y(:,1+total))));
-% S2 = 1./(1+exp(B2 - y2*abs(y(:,2))./abs(y(:,2+total))))*100;
+S1_big = 1./(1+exp(B1 - y1*abs(y_big(:,1))./abs(y_big(:,1+total))));
 
-% S1 = S1.*y(:,4);
-% S2 = S2.*y(:,2);
+TR1_big = S1_big.*y_big(:,12)+S1_big.*y_big(:,13)+ ...
+    S1_big.*y_big(:,14)+S1_big.*y_big(:,15)+ ...
+    S1_big.*y_big(:,16)+S1_big.*y_big(:,17)+ ...
+    S1_big.*y_big(:,18)+S1_big.*y_big(:,19)+ ...
+    S1_big.*y_big(:,20)+y_big(:,11);
+%%%%% plotting
 
+width = 3;
 
-figure('name','Pop 1 Globalized Big')
-plot(t,y(:,1))
-%title('Population of Civilization 1 - Globalized')
+figure('name','Pop 1 all')
+plot(t,y_g(:,1),'-b','Linewidth',width)
+hold on
+plot(t,y_ng(:,1),'--r','Linewidth',width)
+plot(t,y_big(:,1),':k','Linewidth',width)
 ylabel('Population (P)')
 xlabel('Time in Years (t)')
-% axis tight
-figure('name','Resources 1 Globalized Big')
-plot(t,y(:,1+total),'Color',[0,0,1],'DisplayName','finalciv 1')
-%title('Resources in Patch 1 - Globalized')
-ylabel('Accessible Resources (R)')
-xlabel('Time in Years (t)')
-axis tight
-figure('name','Stolen 1 Globalized Big')
-plot(t,S1)
-%title('Percentage of Harvest Stolen by Civilization 1 - Globalized')
-ylabel('Percentage of Harvest Taken')
-xlabel('Time in Years (t)')
-axis tight
-% figure('name','Pop 2 Globalized')
-% plot(t,y(:,2))
-% %title('Population of Civilization 2 - Globalized')
-% ylabel('Population (P)')
-% xlabel('Time in Years (t)')
-% % axis tight
-figure('name','Resources 2 Globalized Big')
-plot(t,y(:,2+total),'Color',[0,0,1],'DisplayName','finalciv 1')
-%title('Resources in Patch 2 - Globalized')
-ylabel('Accessible Resources (R)')
-xlabel('Time in Years (t)')
-% axis tight
-% figure('name','Stolen 2 Globalized')
-% plot(t,S2)
-% %title('Percentage of Harvest Stolen by Civilization 2 - Globalized')
-% xlabel('Time in Years (t)')
-% ylabel('Percentage of Harvest Stolen')
-% % axis tight
+legend('Interconnected','Isolated','10 Populations')
 
-% TR is the total resources available to each civ (i.e. resources
-% in their patch as well as resources they are stealing)
-TR1 = S1.*y(:,total+2) + S1.*y(:,total+3) + S1.*y(:,total+4) + S1.*y(:,total+5) + S1.*y(:,16)... 
-     + S1.*y(:,17) + S1.*y(:,18) + S1.*y(:,19) + S1.*y(:,20) + y(:,11);
-% TR2 = S1.*y(:,total+1) + S1.*y(:,total+3) + S1.*y(:,total+4) + S1.*y(:,total+5);% + S1.*y(:,16)... 
-%      %+ S1.*y(:,17) + S1.*y(:,18) + S1.*y(:,19) + S1.*y(:,20) + y(:,12);
-figure('name','Total Resources 1 Globalized Big')
-plot(t,TR1)
-%title('Total Resources Accessible to Civilization 1 - Globalized')
+set(gca,'FontSize',20)
+set(findall(gcf,'type','text'),'FontSize',20)
+
+figure('name','Resources 1 all')
+plot(t,y_g(:,2),'-b','Linewidth',width)
+hold on
+plot(t,y_ng(:,2),'--r','Linewidth',width)
+plot(t,y_big(:,1+total),':k','Linewidth',width)
+ylabel('Accessible Resources (R)')
+xlabel('Time in Years (t)')
+legend('Interconnected','Isolated','10 Populations')
+
+set(gca,'FontSize',20)
+set(findall(gcf,'type','text'),'FontSize',20)
+
+figure('name','Total Resources 1 all')
+plot(t,TR1_g,'-b','Linewidth',width)
+hold on
+plot(t,TR1_ng,'--r','Linewidth',width)
+plot(t,TR1_big,':k','Linewidth',width)
 xlabel('Time in Years (t)')
 ylabel('Accessible Resources')
-% figure('name','Total Resources 2 Globalized')
-% plot(t,TR2)
-% %title('Total Resources Accessible to Civilization 2 - Globalized')
-% ylabel('Accessible Resources')
-% xlabel('Time in Years (t)')
+legend('Interconnected','Isolated','10 Populations')
 
-% h = get(0,'children');
-% 
-% for i=1:size(h,1)
-%     saveas(h(i),['/Users/zgmdocks/Documents/Coupled EWS/Population Collapse/Graphs/ModelResults/Big Model/',get(h(i),'Name'),'.eps'],'epsc')
-% end
+set(gca,'FontSize',26)
+set(findall(gcf,'type','text'),'FontSize',23)
+
+S1_g = S1_g*100;
+S1_big = S1_big*100;
+
+figure('name','Stolen 1 all')
+plot(t,S1_g,'-b','Linewidth',width)
+hold on
+plot(t,S1_ng,'--r','Linewidth',width)
+plot(t,S1_big,':k','Linewidth',width)
+ylabel('Percentage of Harvest Taken')
+xlabel('Time in Years (t)')
+legend('Interconnected','Isolated','10 Populations')
+
+set(gca,'FontSize',26)
+set(findall(gcf,'type','text'),'FontSize',26)
+
+h = get(0,'children');
+
+
+for i=1:size(h,1)
+    saveas(h(i),['/Users/zgmdocks/Documents/Coupled EWS/Population Collapse/Graphs/ModelResults/',get(h(i),'Name'),'.eps'],'epsc')
+end
+
+
+

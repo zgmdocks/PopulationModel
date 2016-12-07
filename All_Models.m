@@ -137,56 +137,72 @@ options = odeset('NonNegative',eval(genList(total*2)));
 
 S1_big = 1./(1+exp(B1 - y1*abs(y_big(:,1))./abs(y_big(:,1+total))));
 
-TR1_big = S1_big.*y_big(:,2)+S1_big.*y_big(:,3)+ ...
-    S1_big.*y_big(:,4)+S1_big.*y_big(:,5)+ ...
-    S1_big.*y_big(:,6)+S1_big.*y_big(:,7)+ ...
-    S1_big.*y_big(:,8)+S1_big.*y_big(:,9)+ ...
-    S1_big.*y_big(:,10)+y_big(:,1+total);
+TR1_big = S1_big.*y_big(:,12)+S1_big.*y_big(:,13)+ ...
+    S1_big.*y_big(:,14)+S1_big.*y_big(:,15)+ ...
+    S1_big.*y_big(:,16)+S1_big.*y_big(:,17)+ ...
+    S1_big.*y_big(:,18)+S1_big.*y_big(:,19)+ ...
+    S1_big.*y_big(:,20)+y_big(:,11);
 %%%%% plotting
 
+width = 4;
+font = 24;
+
 figure('name','Pop 1 all')
-plot(t,y_g(:,1),'-b')
+plot(t,y_g(:,1),'-b','Linewidth',width)
 hold on
-plot(t,y_ng(:,1),'--r')
-plot(t,y_big(:,1),':k','Linewidth',2)
+plot(t,y_ng(:,1),'--r','Linewidth',width)
+plot(t,y_big(:,1),':k','Linewidth',width)
 ylabel('Population (P)')
 xlabel('Time in Years (t)')
-legend('Interconnected','Isolated')%,'10 Populations')
+legend('Interconnected','Isolated','10 Populations')
+
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 
 figure('name','Resources 1 all')
-plot(t,y_g(:,2),'-b')
+plot(t,y_g(:,2),'-b','Linewidth',width)
 hold on
-plot(t,y_ng(:,2),'--r')
-plot(t,y_big(:,1+total),':k','Linewidth',2)
+plot(t,y_ng(:,2),'--r','Linewidth',width)
+plot(t,y_big(:,1+total),':k','Linewidth',width)
 ylabel('Accessible Resources (R)')
 xlabel('Time in Years (t)')
-legend('Interconnected','Isolated')%,'10 Populations')
+legend('Interconnected','Isolated','10 Populations')
+
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 
 figure('name','Total Resources 1 all')
-plot(t,TR1_g,'-b')
+plot(t,TR1_g,'-b','Linewidth',width)
 hold on
-plot(t,TR1_ng,'--r')
-plot(t,TR1_big,':k','Linewidth',2)
+plot(t,TR1_ng,'--r','Linewidth',width)
+plot(t,TR1_big,':k','Linewidth',width)
 xlabel('Time in Years (t)')
 ylabel('Accessible Resources')
-legend('Interconnected','Isolated')%,'10 Populations')
+legend('Interconnected','Isolated','10 Populations')
+
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 
 S1_g = S1_g*100;
 S1_big = S1_big*100;
 
 figure('name','Stolen 1 all')
-plot(t,S1_g,'-b')
+plot(t,S1_g,'-b','Linewidth',width)
 hold on
-plot(t,S1_ng,'--r')
-plot(t,S1_big,':k','Linewidth',2)
+plot(t,S1_ng,'--r','Linewidth',width)
+plot(t,S1_big,':k','Linewidth',width)
 ylabel('Percentage of Harvest Taken')
 xlabel('Time in Years (t)')
-legend('Interconnected','Isolated')%,'10 Populations')
+legend('Interconnected','Isolated','10 Populations')
+
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 
 h = get(0,'children');
 
+
 for i=1:size(h,1)
-    saveas(h(i),['/Users/zgmdocks/Documents/Coupled EWS/Population Collapse/Graphs/ModelResults/',get(h(i),'Name'),'slides.eps'],'epsc')
+    saveas(h(i),['/Users/zgmdocks/Documents/Coupled EWS/Population Collapse/Graphs/ModelResults/',get(h(i),'Name'),'.eps'],'epsc')
 end
 
 

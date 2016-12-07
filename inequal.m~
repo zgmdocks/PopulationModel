@@ -15,10 +15,8 @@ epsilon = 10^-4;
 width = 4;
 font = 24;
 
-% changing steali to 1 lets population i take resources from its
-% neighbors. changing the value to 0, turns off taking of resources
-steal1 = 0;
-steal2 = 0;
+steal1 = 1;
+steal2 = 1;
 
 b1 = @(R,P) 1/(1 + exp(B1-y1*P/(R)))*steal1 ;
 b2 = @(R,P) 1/(1 + exp(B2-y2*P/R))*steal2 ;
@@ -29,7 +27,7 @@ model = @(t,z) [a1*z(1)*(1-(z(1)/(z(2)+(b1(z(2),z(1))*z(4))+epsilon))) ;
      c2*z(4)*(1-(z(4)/K2)) - h2*z(3) - b1(z(2),z(1))*h1*z(1)];
  
 tstart = 1800;
-tmax = 8000;
+tmax = 2300;
 dt = 1;
 t = tstart:dt:tmax;
 
@@ -56,8 +54,6 @@ end
 plot(t,y(:,1),'Linewidth',width)
 xlabel('Time in Years (t)')
 ylabel('Population (P)')
-set(gca,'FontSize',font)
-set(findall(gcf,'type','text'),'FontSize',font)
 % title('population civ 1')
 % axis tight
 if steal1 == 1
@@ -65,12 +61,11 @@ if steal1 == 1
 else
     figure('Name','res 1')
 end
-
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 plot(t,y(:,2),'Linewidth',width)
 xlabel('Time in Years (t)')
 ylabel('Accessible Resources (R)')
-set(gca,'FontSize',font)
-set(findall(gcf,'type','text'),'FontSize',font)
 % title('resources civ 1')
 % axis tight
 if steal1 == 1
@@ -78,12 +73,11 @@ if steal1 == 1
 else
     figure('Name','steal 1')
 end
-
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 plot(t,S1,'Linewidth',width)
 xlabel('Time in Years (t)')
 ylabel('Percentage of Harvest Taken')
-set(gca,'FontSize',font)
-set(findall(gcf,'type','text'),'FontSize',font)
 % title('stolen harvest civ 1')
 % axis tight
 if steal1 == 1
@@ -91,11 +85,11 @@ if steal1 == 1
 else
     figure('Name','pop 2')
 end
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 plot(t,y(:,3),'Linewidth',width)
 xlabel('Time in Years (t)')
 ylabel('Population (P)')
-set(gca,'FontSize',font)
-set(findall(gcf,'type','text'),'FontSize',font)
 % title('population civ 2')
 % axis tight
 if steal1 == 1
@@ -103,11 +97,11 @@ if steal1 == 1
 else
     figure('Name','res 2')
 end
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 plot(t,y(:,4),'Linewidth',width)
 xlabel('Time in Years (t)')
 ylabel('Accessible Resources (R)')
-set(gca,'FontSize',font)
-set(findall(gcf,'type','text'),'FontSize',font)
 % title('resources civ 2')
 % axis tight
 if steal1 == 1
@@ -115,11 +109,11 @@ if steal1 == 1
 else
     figure('Name','steal 2')
 end
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 plot(t,S2,'Linewidth',width)
 xlabel('Time in Years (t)')
 ylabel('Percentage of Harvest Taken')
-set(gca,'FontSize',font)
-set(findall(gcf,'type','text'),'FontSize',font)
 % title('stolen harvest civ 2')
 % axis tight
 
@@ -147,6 +141,8 @@ if steal1 == 1
 else
     figure('Name','TR 1')
 end
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 plot(t,TR1,'Linewidth',width)
 xlabel('Time in Years (t)')
 ylabel('Accessible Resources')

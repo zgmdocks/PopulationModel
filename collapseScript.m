@@ -1,5 +1,7 @@
 clear
 
+font = 24;
+
 total = 10;
 
 both = true;
@@ -18,7 +20,7 @@ ytemp = zeros((tmax-tstart)*(1/dt)+1,4);
 
 incr = 50;
 
-as = linspace(0.001,0.0225,incr); %0.005,0.025
+as = linspace(0.001,0.025,incr); %0.005,0.025
 Ks = linspace(500000,1500000,incr); %500000,1500000
 cs = linspace(0.005,0.03,incr); %0.005,0.03
 hs = linspace(0.001,0.02,incr); %0.001,0.02
@@ -243,24 +245,26 @@ for j = 1:2:8
     plot(params{j+1},t_c_1_sym,'or');
     %plot(params{j+1},t_c_2_sym, '-m');
     xlabel([params{j}(1),params{j}(3:end)]);
-    ylabel('Time to collapse (t)');
-    legend('Pop 1 - Isolated',...%'Pop 2 - Isolated', ...
-        'Pop 1 - 10 Population Model',...%'Pop 2 - 10 Population Model', ...
-        'Pop 1 - Interconnected Symmetric')%'Pop 2 - Interconnected Symmetric')
+    ylabel('Time to collapse (T)');
+    legend('Isolated',...%'Pop 2 - Isolated', ...
+        '10 Populations',...%'Pop 2 - 10 Population Model', ...
+        'Interconnected')%'Pop 2 - Interconnected Symmetric')
+    set(gca,'FontSize',font)
+    set(findall(gcf,'type','text'),'FontSize',font)
     if j == 1
-        plot(ax,ctrl_time_g,'*g')
+        plot(ax,ctrl_time_g,'*g','LineWidth',7)
         %plot(ax,ctrl_time_ng,'*y')
     elseif j == 3
-        plot(Kx, ctrl_time_g,'*g')
+        plot(Kx, ctrl_time_g,'*g','LineWidth',7)
         %plot(Kx, ctrl_time_ng,'*y')
     elseif j == 5
-        plot(cx, ctrl_time_g,'*g')
+        plot(cx, ctrl_time_g,'*g','LineWidth',7)
         %plot(cx, ctrl_time_ng,'*y')
     elseif j == 7
-        plot(hx, ctrl_time_g,'*g')
+        plot(hx, ctrl_time_g,'*g','LineWidth',7)
         %plot(hx, ctrl_time_ng,'*y')
     elseif j == 9
-        plot(yx, ctrl_time_g,'*g')
+        plot(yx, ctrl_time_g,'*g','LineWidth',7)
         %plot(yx, ctrl_time_ng,'*y')
     end
 end

@@ -111,7 +111,7 @@ font = 16;
 
 plot(2:incr,t_c,'Linewidth',width)
 xlabel('Number of Populations')
-ylabel('Time to Collapse (t)')
+ylabel('Time to Collapse (T)')
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
 

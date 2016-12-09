@@ -89,7 +89,7 @@ model = @(t,z) [a1*z(1)*(1-(z(1)/(z(2)+(b1(z(2),z(1))*z(4))+epsilon))) ;
      c2*z(4)*(1-(z(4)/K2)) - h2*z(3) - b1(z(2),z(1))*h1*z(1)];
  
 tstart = 1800;
-tmax = 2500;
+tmax = 2600;
 dt = 1;
 t = tstart:dt:tmax;
 
@@ -148,37 +148,37 @@ width = 4;
 font = 24;
 
 figure('name','Pop 1 all')
-plot(t,y_g(:,1),'-b','Linewidth',width)
-hold on
 plot(t,y_ng(:,1),'--r','Linewidth',width)
+hold on
+plot(t,y_g(:,1),'-b','Linewidth',width)
 plot(t,y_big(:,1),':k','Linewidth',width)
 ylabel('Population (P)')
 xlabel('Time in Years (t)')
-legend('Interconnected','Isolated','10 Populations')
+legend('Isolated','Interconnected','10 Populations')
 
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
 
 figure('name','Resources 1 all')
-plot(t,y_g(:,2),'-b','Linewidth',width)
-hold on
 plot(t,y_ng(:,2),'--r','Linewidth',width)
+hold on
+plot(t,y_g(:,2),'-b','Linewidth',width)
 plot(t,y_big(:,1+total),':k','Linewidth',width)
 ylabel('Accessible Resources (R)')
 xlabel('Time in Years (t)')
-legend('Interconnected','Isolated','10 Populations')
+legend('Isolated','Interconnected','10 Populations')
 
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
 
 figure('name','Total Resources 1 all')
-plot(t,TR1_g,'-b','Linewidth',width)
-hold on
 plot(t,TR1_ng,'--r','Linewidth',width)
+hold on
+plot(t,TR1_g,'-b','Linewidth',width)
 plot(t,TR1_big,':k','Linewidth',width)
 xlabel('Time in Years (t)')
 ylabel('Accessible Resources')
-legend('Interconnected','Isolated','10 Populations')
+legend('Isolated','Interconnected','10 Populations')
 
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
@@ -187,13 +187,13 @@ S1_g = S1_g*100;
 S1_big = S1_big*100;
 
 figure('name','Stolen 1 all')
-plot(t,S1_g,'-b','Linewidth',width)
-hold on
 plot(t,S1_ng,'--r','Linewidth',width)
+hold on
+plot(t,S1_g,'-b','Linewidth',width)
 plot(t,S1_big,':k','Linewidth',width)
 ylabel('Percentage of Harvest Taken')
 xlabel('Time in Years (t)')
-legend('Interconnected','Isolated','10 Populations')
+legend('Isolated','Interconnected','10 Populations')
 
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)

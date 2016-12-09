@@ -1,7 +1,7 @@
 function s = geny0(total)
 s = 'y0 = [';
 for i=1:total
-    s = [s, '500000, '];
+    s = [s, '50000, '];
 end
 for j = 1:total
     s = [s, 'K',num2str(j),', '];

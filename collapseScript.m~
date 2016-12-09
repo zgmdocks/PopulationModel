@@ -1,5 +1,8 @@
 clear
+
 font = 24;
+
+total = 10;
 
 both = true;
 symmetric = true;
@@ -9,7 +12,7 @@ tmax = 4000;
 dt = 1;
 t = tstart:dt:tmax;
 
-cap = 2000;
+cap = 4000;
 
 iters = 1;
 y = zeros((tmax-tstart)*(1/dt)+1,4);
@@ -35,8 +38,6 @@ params{7} = 'h1 - Harvesting Constant';
 params{8} = hs;
 params{9} = 'y1 - Steepness of b Function';
 params{10} = ys;
-params{11} = 'B1 - Location of Mid-point of Sigmoid';
-params{12} = ys;
 
 ax = 0.0177;
 ay = 200;
@@ -48,8 +49,6 @@ hx = 0.008;
 hy = 200;
 yx = 5;
 yy = 200;
-Bx = 3.5;
-By = 200;
 
 a1 = 0.0177; % aP is the net growth rate of the population 0.0177
 K1 = 1000000; % carrying capacity 1,000,000
@@ -79,8 +78,36 @@ else
     ctrl_time_g = find(y(:,1)<1,1);
 end
 
+a1 = 0.0177; % aP is the net growth rate of the population 0.0177
+K1 = 1000000; % carrying capacity 1,000,000
+c1 = 0.015; % growth rate of the resources 0.015
+h1 = 0.008; % harvesting constant 0.008
+B1 = 3.5; % controls the location of the mid-point of the sigmoid 3.5
+y1 = 5; % controls how steep the curve is 5
+a2 = 0.0177; % aP is the net growth rate of the population
+K2 = 1000000; % carrying capacity
+c2 = 0.015; % growth rate of the resources
+h2 = 0.008; % harvesting constant
+B2 = 3.5; % controls the location of the mid-point of the sigmoid
+y2 = 5; % controls how steep the curve is
+epsilon = 10^-4;
+b1 = 0 ;
+b2 = 0 ;
+y0 = [50000, K1, 50000, K2];
+model = @(t,z) [a1*z(1)*(1-(z(1)/(z(2)+(b1*z(4))+epsilon))) ;
+    (c1*z(2)*(1-(z(2)/K1)) - h1*z(1) - b2*h2*z(3));
+    a2*z(3)*(1-(z(3)/(z(4)+(b2*z(2))+epsilon))) ;
+    c2*z(4)*(1-(z(4)/K2)) - h2*z(3) - b1*h1*z(1)];
+options = odeset('NonNegative',[1 2 3 4]);
+[t,y] = ode45(model,t,y0,options);
+if isempty(find(y(:,1)<1,1))
+    ctrl_time_ng = cap;
+else
+    ctrl_time_ng = find(y(:,1)<1,1);
+end
 
-for j = 9:2:12
+
+for j = 1:2:8
     j
     a1 = 0.0177; % aP is the net growth rate of the population 0.0177
     K1 = 1000000; % carrying capacity 1,000,000
@@ -95,12 +122,14 @@ for j = 9:2:12
     B2 = 3.5; % controls the location of the mid-point of the sigmoid
     y2 = 5; % controls how steep the curve is
     epsilon = 10^-4;
-    t_c_1_asym = zeros(1,incr);
-    t_c_2_asym = zeros(1,incr);
+    t_c_1_big = zeros(1,incr);
+    t_c_2_big = zeros(1,incr);
     t_c_1_sym = zeros(1,incr);
     t_c_2_sym = zeros(1,incr);
+    t_c_1_iso = zeros(1,incr);
+    t_c_2_iso = zeros(1,incr);
     for i = 1:incr
-        %asymmetric case
+        %10 population case symmetric
         a1 = 0.0177; % aP is the net growth rate of the population 0.0177
         K1 = 1000000; % carrying capacity 1,000,000
         c1 = 0.015; % growth rate of the resources 0.015
@@ -113,34 +142,30 @@ for j = 9:2:12
         h2 = 0.008; % harvesting constant
         B2 = 3.5; % controls the location of the mid-point of the sigmoid
         y2 = 5; % controls how steep the curve is
-        epsilon = 10^-4;     
-        assignin('base',char([params{j}(1),'1']),params{j+1}(i));
+        epsilon = 10^-4;
         b1 = @(R,P) 1/(1 + exp(B1-y1*P/R)) ;
         b2 = @(R,P) 1/(1 + exp(B2-y2*P/R)) ;
-        y0 = [50000, K1, 50000, K2];
-        model = @(t,z) [a1*z(1)*(1-(z(1)/(z(2)+(b1(z(2),z(1))*z(4))+epsilon))) ;
-            (c1*z(2)*(1-(z(2)/K1)) - h1*z(1) - b2(z(4),z(3))*h2*z(3));
-            a2*z(3)*(1-(z(3)/(z(4)+(b2(z(4),z(3))*z(2))+epsilon))) ;
-            c2*z(4)*(1-(z(4)/K2)) - h2*z(3) - b1(z(2),z(1))*h1*z(1)];
-        options = odeset('NonNegative',[1 2 3 4]);
+        assignin('base',char([params{j}(1),'1']),params{j+1}(i));
+        eval(['model = @ (t,z) ', genEqneasy(total)]);
+        eval(geny0easy(total));
+        options = odeset('NonNegative',eval(genList(total*2)));
         [t,y] = ode45(model,t,y0,options);
-        if isempty(find(y(:,1)<1,1));
-            t_c_1_asym(i) = cap;
+        if isempty(find(y(:,1)<1,1))
+            t_c_1_big(i) = cap;
         else
-            t_c_1_asym(i) = find(y(:,1)<1,1);
-            if t_c_1_asym(i) > cap
-                t_c_1_asym(i) = cap;
+            t_c_1_big(i) = find(y(:,1)<1,1);
+            if t_c_1_big(i) > cap
+                t_c_1_big(i) = cap;
             end
         end
         if isempty(find(y(:,3)<1,1))
-            t_c_2_asym(i) = cap;
+            t_c_2_big(i) = cap;
         else
-            t_c_2_asym(i) = find(y(:,3)<1,1);
-            if t_c_2_asym(i) > cap
-                t_c_2_asym(i) = cap;
+            t_c_2_big(i) = find(y(:,3)<1,1);
+            if t_c_2_big(i) > cap
+                t_c_2_big(i) = cap;
             end
         end
-        
         % symmetric case
         a1 = 0.0177; % aP is the net growth rate of the population 0.0177
         K1 = 1000000; % carrying capacity 1,000,000
@@ -155,10 +180,10 @@ for j = 9:2:12
         B2 = 3.5; % controls the location of the mid-point of the sigmoid
         y2 = 5; % controls how steep the curve is
         epsilon = 10^-4;
-        assignin('base',char([params{j}(1),'1']),params{j+1}(i));
-        assignin('base',char([params{j}(1),'2']),params{j+1}(i));
         b1 = @(R,P) 1/(1 + exp(B1-y1*P/R)) ;
         b2 = @(R,P) 1/(1 + exp(B2-y2*P/R)) ;
+        assignin('base',char([params{j}(1),'1']),params{j+1}(i));
+        assignin('base',char([params{j}(1),'2']),params{j+1}(i));
         y0 = [50000, K1, 50000, K2];
         model = @(t,z) [a1*z(1)*(1-(z(1)/(z(2)+(b1(z(2),z(1))*z(4))+epsilon))) ;
             (c1*z(2)*(1-(z(2)/K1)) - h1*z(1) - b2(z(4),z(3))*h2*z(3));
@@ -182,45 +207,66 @@ for j = 9:2:12
                 t_c_2_sym(i) = cap;
             end
         end
+        % non globalized case symmetric
+        b1 = 0;
+        b2 = 0;
+        model = @(t,z) [a1*z(1)*(1-(z(1)/(z(2)+(b1*z(4))+epsilon))) ;
+            (c1*z(2)*(1-(z(2)/K1)) - h1*z(1) - b2*h2*z(3));
+            a2*z(3)*(1-(z(3)/(z(4)+(b2*z(2))+epsilon))) ;
+            c2*z(4)*(1-(z(4)/K2)) - h2*z(3) - b1*h1*z(1)];
+        [t,y] = ode45(model,t,y0,options);
+        if isempty(find(y(:,1)<1,1))
+            t_c_1_iso(i) = cap;
+        else
+            t_c_1_iso(i) = find(y(:,1)<1,1);
+            if t_c_1_iso(i) > cap
+                t_c_1_iso(i) = cap;
+            end
+        end
+        if isempty(find(y(:,3)<1,1))
+            t_c_2_iso(i) = cap;
+        else
+            t_c_2_iso(i) = find(y(:,3)<1,1);
+            if t_c_2_iso(i) > cap
+                t_c_2_iso(i) = cap;
+            end
+        end
     end
     if symmetric
         figure('name',[params{j}(1), ' - Collapse Time''_', datestr(clock,0),'_sym'])
     else
         figure('name',[params{j}(1), ' - Collapse Time''_', datestr(clock,0),'_asym'])
     end
-    plot(params{j+1},t_c_1_asym,'ok');
+    plot(params{j+1},t_c_1_iso,'ob');
     hold on
-    plot(params{j+1},t_c_2_asym, '-y');
-    plot(params{j+1},t_c_1_sym,'oc');
-    plot(params{j+1},t_c_2_sym, '-m');
+    %plot(params{j+1},t_c_2_iso, '-r');
+    plot(params{j+1},t_c_1_big,'ok');
+    %plot(params{j+1},t_c_2_big, '-y');
+    plot(params{j+1},t_c_1_sym,'or');
+    %plot(params{j+1},t_c_2_sym, '-m');
     xlabel([params{j}(1),params{j}(3:end)]);
     ylabel('Time to collapse (T)');
-    if j == 11
-        legend('Pop 1 - IA','Pop 2 - IA', ...
-        'Pop 1 - IS','Pop 2 - IS','Location','northwest')
-    else
-        legend('Pop 1 - IA','Pop 2 - IA', ...
-        'Pop 1 - IS','Pop 2 - IS')
-    end
+    legend('Isolated',...%'Pop 2 - Isolated', ...
+        '10 Populations',...%'Pop 2 - 10 Population Model', ...
+        'Interconnected')%'Pop 2 - Interconnected Symmetric')
     set(gca,'FontSize',font)
     set(findall(gcf,'type','text'),'FontSize',font)
     if j == 1
-            plot(ax,ctrl_time_g,'*g','LineWidth',7)
-            %plot(ax,ctrl_time_ng,'*y')
-        elseif j == 3
-            plot(Kx, ctrl_time_g,'*g','LineWidth',7)
-            %plot(Kx, ctrl_time_ng,'*y')
-        elseif j == 5
-            plot(cx, ctrl_time_g,'*g','LineWidth',7)
-            %plot(cx, ctrl_time_ng,'*y')
-        elseif j == 7
-            plot(hx, ctrl_time_g,'*g','LineWidth',7)
-            %plot(hx, ctrl_time_ng,'*y')
-        elseif j == 9
-            plot(yx, ctrl_time_g,'*g','LineWidth',7)
-        elseif j == 11
-            plot(Bx, ctrl_time_g,'*g','LineWidth',7)
-        end
+        plot(ax,ctrl_time_g,'*g','LineWidth',7)
+        %plot(ax,ctrl_time_ng,'*y')
+    elseif j == 3
+        plot(Kx, ctrl_time_g,'*g','LineWidth',7)
+        %plot(Kx, ctrl_time_ng,'*y')
+    elseif j == 5
+        plot(cx, ctrl_time_g,'*g','LineWidth',7)
+        %plot(cx, ctrl_time_ng,'*y')
+    elseif j == 7
+        plot(hx, ctrl_time_g,'*g','LineWidth',7)
+        %plot(hx, ctrl_time_ng,'*y')
+    elseif j == 9
+        plot(yx, ctrl_time_g,'*g','LineWidth',7)
+        %plot(yx, ctrl_time_ng,'*y')
+    end
 end
 
 h = get(0,'children');

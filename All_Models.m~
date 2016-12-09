@@ -144,31 +144,33 @@ TR1_big = S1_big.*y_big(:,12)+S1_big.*y_big(:,13)+ ...
     S1_big.*y_big(:,20)+y_big(:,11);
 %%%%% plotting
 
-width = 3;
+width = 4;
+font = 24;
 
 figure('name','Pop 1 all')
-plot(t,y_g(:,1),'-b','Linewidth',width)
-hold on
 plot(t,y_ng(:,1),'--r','Linewidth',width)
+hold on
+plot(t,y_g(:,1),'-b','Linewidth',width)
 plot(t,y_big(:,1),':k','Linewidth',width)
 ylabel('Population (P)')
 xlabel('Time in Years (t)')
-legend('Interconnected','Isolated','10 Populations')
+legend('Isolated','Interconnected','10 Populations')
 
-set(gca,'FontSize',20)
-set(findall(gcf,'type','text'),'FontSize',20)
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 
 figure('name','Resources 1 all')
-plot(t,y_g(:,2),'-b','Linewidth',width)
+
 hold on
+plot(t,y_g(:,2),'-b','Linewidth',width)
 plot(t,y_ng(:,2),'--r','Linewidth',width)
 plot(t,y_big(:,1+total),':k','Linewidth',width)
 ylabel('Accessible Resources (R)')
 xlabel('Time in Years (t)')
-legend('Interconnected','Isolated','10 Populations')
+legend('Isolated','Interconnected','10 Populations')
 
-set(gca,'FontSize',20)
-set(findall(gcf,'type','text'),'FontSize',20)
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 
 figure('name','Total Resources 1 all')
 plot(t,TR1_g,'-b','Linewidth',width)
@@ -177,10 +179,10 @@ plot(t,TR1_ng,'--r','Linewidth',width)
 plot(t,TR1_big,':k','Linewidth',width)
 xlabel('Time in Years (t)')
 ylabel('Accessible Resources')
-legend('Interconnected','Isolated','10 Populations')
+legend('Isolated','Interconnected','10 Populations')
 
-set(gca,'FontSize',26)
-set(findall(gcf,'type','text'),'FontSize',23)
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 
 S1_g = S1_g*100;
 S1_big = S1_big*100;
@@ -194,8 +196,8 @@ ylabel('Percentage of Harvest Taken')
 xlabel('Time in Years (t)')
 legend('Interconnected','Isolated','10 Populations')
 
-set(gca,'FontSize',26)
-set(findall(gcf,'type','text'),'FontSize',26)
+set(gca,'FontSize',font)
+set(findall(gcf,'type','text'),'FontSize',font)
 
 h = get(0,'children');
 

@@ -246,9 +246,15 @@ for j = 1:2:8
     %plot(params{j+1},t_c_2_sym, '-m');
     xlabel([params{j}(1),params{j}(3:end)]);
     ylabel('Time to collapse (T)');
-    legend('Isolated',...%'Pop 2 - Isolated', ...
+    if j == 7
+        legend('Isolated',...%'Pop 2 - Isolated', ...
+        '10 Populations',...%'Pop 2 - 10 Population Model', ...
+        'Interconnected','Location','northwest')
+    else
+        legend('Isolated',...%'Pop 2 - Isolated', ...
         '10 Populations',...%'Pop 2 - 10 Population Model', ...
         'Interconnected')%'Pop 2 - Interconnected Symmetric')
+    end
     set(gca,'FontSize',font)
     set(findall(gcf,'type','text'),'FontSize',font)
     if j == 1

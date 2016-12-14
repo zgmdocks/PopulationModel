@@ -158,6 +158,8 @@ legend('Isolated','Interconnected','10 Populations')
 
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
+% set(gca, 'YTickMode','manual')
+% set(gca, 'YTickLabel',num2str(get(gca,'YTick')'))
 
 figure('name','Resources 1 all')
 plot(t,y_ng(:,2),'--r','Linewidth',width)
@@ -170,6 +172,8 @@ legend('Isolated','Interconnected','10 Populations')
 
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
+% set(gca, 'YTickMode','manual')
+% set(gca, 'YTickLabel',num2str(get(gca,'YTick')'))
 
 figure('name','Total Resources 1 all')
 plot(t,TR1_ng,'--r','Linewidth',width)
@@ -182,6 +186,8 @@ legend('Isolated','Interconnected','10 Populations')
 
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
+% set(gca, 'YTickMode','manual')
+% set(gca, 'YTickLabel',num2str(get(gca,'YTick')'))
 
 S1_g = S1_g*100;
 S1_big = S1_big*100;
@@ -195,8 +201,16 @@ ylabel('Percentage of Harvest Taken')
 xlabel('Time in Years (t)')
 legend('Isolated','Interconnected','10 Populations')
 
-set(gca,'FontSize',font)
-set(findall(gcf,'type','text'),'FontSize',font)
+
+
+x0 = 1800;
+y0 = 0;
+width = 380;
+height = 260;
+set(gcf,'units','points','position',[x0,y0,width,height])
+
+set(gca,'FontSize',16)
+set(findall(gcf,'type','text'),'FontSize',16)
 
 h = get(0,'children');
 

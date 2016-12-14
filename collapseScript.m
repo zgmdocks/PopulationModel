@@ -237,23 +237,23 @@ for j = 1:2:8
     else
         figure('name',[params{j}(1), ' - Collapse Time''_', datestr(clock,0),'_asym'])
     end
-    plot(params{j+1},t_c_1_iso,'ob');
+    plot(params{j+1},t_c_1_iso,'or');
     hold on
     %plot(params{j+1},t_c_2_iso, '-r');
+    plot(params{j+1},t_c_1_sym,'ob');
+    %plot(params{j+1},t_c_2_sym, '-m');
     plot(params{j+1},t_c_1_big,'ok');
     %plot(params{j+1},t_c_2_big, '-y');
-    plot(params{j+1},t_c_1_sym,'or');
-    %plot(params{j+1},t_c_2_sym, '-m');
     xlabel([params{j}(1),params{j}(3:end)]);
     ylabel('Time to collapse (T)');
     if j == 7
         legend('Isolated',...%'Pop 2 - Isolated', ...
-        '10 Populations',...%'Pop 2 - 10 Population Model', ...
-        'Interconnected','Location','northwest')
+        'Interconnected',...%'Pop 2 - 10 Population Model', ...
+        '10 Populations','Location','northwest')
     else
         legend('Isolated',...%'Pop 2 - Isolated', ...
-        '10 Populations',...%'Pop 2 - 10 Population Model', ...
-        'Interconnected')%'Pop 2 - Interconnected Symmetric')
+        'Interconnected',...%'Pop 2 - 10 Population Model', ...
+        '10 Populations')%'Pop 2 - Interconnected Symmetric')
     end
     set(gca,'FontSize',font)
     set(findall(gcf,'type','text'),'FontSize',font)

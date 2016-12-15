@@ -45,9 +45,6 @@ options = odeset('NonNegative',[1 2 3 4]);
 S1 = 1./(1+exp(B1 - y1*abs(y(:,1))./abs(y(:,2))))*steal1;
 S2 = 1./(1+exp(B2 - y2*abs(y(:,3))./abs(y(:,4))))*steal2;
 
-% S1 = S1.*y(:,4);
-% S2 = S2.*y(:,2);
-
 if steal1 == 1
     figure('Name','pop 1 s1')
 else
@@ -58,8 +55,6 @@ xlabel('Time in Years (t)')
 ylabel('Population (P)')
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
-% title('population civ 1')
-% axis tight
 if steal1 == 1
     figure('Name','res 1 s1')
 else
@@ -71,8 +66,6 @@ xlabel('Time in Years (t)')
 ylabel('Accessible Resources (R)')
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
-% title('resources civ 1')
-% axis tight
 if steal1 == 1
     figure('Name','steal 1 s1')
 else
@@ -84,8 +77,6 @@ xlabel('Time in Years (t)')
 ylabel('Percentage of Harvest Taken')
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
-% title('stolen harvest civ 1')
-% axis tight
 if steal1 == 1
     figure('Name','pop 2 s1')
 else
@@ -96,8 +87,6 @@ xlabel('Time in Years (t)')
 ylabel('Population (P)')
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
-% title('population civ 2')
-% axis tight
 if steal1 == 1
     figure('Name','res 2 s1')
 else
@@ -108,8 +97,6 @@ xlabel('Time in Years (t)')
 ylabel('Accessible Resources (R)')
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
-% title('resources civ 2')
-% axis tight
 if steal1 == 1
     figure('Name','steal 2 s1')
 else
@@ -120,23 +107,6 @@ xlabel('Time in Years (t)')
 ylabel('Percentage of Harvest Taken')
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
-% title('stolen harvest civ 2')
-% axis tight
-
-% diff2 = zeros(size(y,1),1);
-% for i = 2:size(y,1)
-%     diff2(i) = y(i,3) - y(i-1,3);
-% end
-% figure()
-% plot(t,diff2);
-% title('difference of 2nd population')
-% diff1 = zeros(size(y,1),1);
-% for i = 2:size(y,1)
-%     diff1(i) = y(i,1) - y(i-1,1);
-% end
-% figure()
-% plot(t,diff1);
-% title('difference of 1st population')
 
 % TR is the total resources available to each civ (i.e. resources
 % in their patch as well as resources they are stealing)
@@ -152,7 +122,6 @@ xlabel('Time in Years (t)')
 ylabel('Accessible Resources')
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
-% title('TR1')
 if steal1 == 1
     figure('Name','TR 2 s1')
 else
@@ -163,7 +132,6 @@ xlabel('Time in Years (t)')
 ylabel('Accessible Resources')
 set(gca,'FontSize',font)
 set(findall(gcf,'type','text'),'FontSize',font)
-% title('TR2')
 
 
 h = get(0,'children');

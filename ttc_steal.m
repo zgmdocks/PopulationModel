@@ -205,21 +205,17 @@ for j = 9:2:12
     set(gca,'FontSize',font)
     set(findall(gcf,'type','text'),'FontSize',font)
     if j == 1
-            plot(ax,ctrl_time_g,'*g','LineWidth',7)
-            %plot(ax,ctrl_time_ng,'*y')
+            plot(ax,ctrl_time_g,'*g','LineWidth',10)
         elseif j == 3
-            plot(Kx, ctrl_time_g,'*g','LineWidth',7)
-            %plot(Kx, ctrl_time_ng,'*y')
+            plot(Kx, ctrl_time_g,'*g','LineWidth',10)
         elseif j == 5
-            plot(cx, ctrl_time_g,'*g','LineWidth',7)
-            %plot(cx, ctrl_time_ng,'*y')
+            plot(cx, ctrl_time_g,'*g','LineWidth',10)
         elseif j == 7
-            plot(hx, ctrl_time_g,'*g','LineWidth',7)
-            %plot(hx, ctrl_time_ng,'*y')
+            plot(hx, ctrl_time_g,'*g','LineWidth',10)
         elseif j == 9
-            plot(yx, ctrl_time_g,'*g','LineWidth',7)
+            plot(yx, ctrl_time_g,'*g','LineWidth',12)
         elseif j == 11
-            plot(Bx, ctrl_time_g,'*g','LineWidth',7)
+            plot(Bx, ctrl_time_g,'*g','LineWidth',12)
         end
 end
 

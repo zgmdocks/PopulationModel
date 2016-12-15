@@ -104,11 +104,6 @@ for q = 1:2
             result(end,1) = 2;
             result(end,2) = -1;
             pcolor(params{j+1},params{i+1},result)
-%             if symmetric
-%                 title(['Survivability in terms of ',params{j}(1),' and ',params{i}(1),' - Globalized',' - Symmetric'])
-%             else
-%                 title(['Survivability in terms of ',params{j}(1),' and ',params{i}(1),' - Globalized',' - Asymmetric'])
-%             end
             ylabel([params{i}(1),params{i}(3:end)])
             xlabel([params{j}(1),params{j}(3:end)])
             colorbar
@@ -152,7 +147,6 @@ for q = 1:2
             result(end,1) = 2;
             result(end,2) = -1;
             pcolor(params{j+1},params{i+1},result)
-%             title(['Survivability in terms of ',params{j}(1),' and ',params{i}(1),' - Not Globalized',' - Symmetric'])
             ylabel([params{i}(1),params{i}(3:end)])
             xlabel([params{j}(1),params{j}(3:end)])
             colorbar

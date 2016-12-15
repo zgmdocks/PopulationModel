@@ -239,39 +239,31 @@ for j = 1:2:8
     end
     plot(params{j+1},t_c_1_iso,'or');
     hold on
-    %plot(params{j+1},t_c_2_iso, '-r');
     plot(params{j+1},t_c_1_sym,'ob');
-    %plot(params{j+1},t_c_2_sym, '-m');
     plot(params{j+1},t_c_1_big,'ok');
-    %plot(params{j+1},t_c_2_big, '-y');
     xlabel([params{j}(1),params{j}(3:end)]);
     ylabel('Time to collapse (T)');
     if j == 7
-        legend('Isolated',...%'Pop 2 - Isolated', ...
-        'Interconnected',...%'Pop 2 - 10 Population Model', ...
+        legend('Isolated',...
+        'Interconnected',...
         '10 Populations','Location','northwest')
     else
-        legend('Isolated',...%'Pop 2 - Isolated', ...
-        'Interconnected',...%'Pop 2 - 10 Population Model', ...
-        '10 Populations')%'Pop 2 - Interconnected Symmetric')
+        legend('Isolated',...
+        'Interconnected',...
+        '10 Populations')
     end
     set(gca,'FontSize',font)
     set(findall(gcf,'type','text'),'FontSize',font)
     if j == 1
-        plot(ax,ctrl_time_g,'*g','LineWidth',7)
-        %plot(ax,ctrl_time_ng,'*y')
+        plot(ax,ctrl_time_g,'*g','LineWidth',12)
     elseif j == 3
-        plot(Kx, ctrl_time_g,'*g','LineWidth',7)
-        %plot(Kx, ctrl_time_ng,'*y')
+        plot(Kx, ctrl_time_g,'*g','LineWidth',12)
     elseif j == 5
-        plot(cx, ctrl_time_g,'*g','LineWidth',7)
-        %plot(cx, ctrl_time_ng,'*y')
+        plot(cx, ctrl_time_g,'*g','LineWidth',12)
     elseif j == 7
-        plot(hx, ctrl_time_g,'*g','LineWidth',7)
-        %plot(hx, ctrl_time_ng,'*y')
+        plot(hx, ctrl_time_g,'*g','LineWidth',12)
     elseif j == 9
-        plot(yx, ctrl_time_g,'*g','LineWidth',7)
-        %plot(yx, ctrl_time_ng,'*y')
+        plot(yx, ctrl_time_g,'*g','LineWidth',12)
     end
 end
 
